@@ -1,0 +1,19 @@
+{
+  "name": "avatar_project",
+  "version": "1.0.0",
+  "description": "Download's avatars from github",
+  "main": "download_avatars.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "avatar",
+    "project",
+    "lighthouselavs"
+  ],
+  "author": "Gabriel Varadi",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
+}
