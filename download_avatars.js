@@ -6,13 +6,12 @@ var input1 = process.argv.slice(2)
 
 
 
-
 function getRepoContributors(repoOwner, repoName, cb) {
   var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
       'User-Agent': 'request',
-      'Authorization':`token ${token.GITHUB_TOKEN}`
+      'Authorization': `token ${token.GITHUB_TOKEN}`
     }
   };
 
@@ -24,12 +23,14 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 getRepoContributors(input1[0], input1[1], function(err, result) {
+  if (!input1[1]) {
+    console.log("You need to input the repository owner and \n the repo like so : node download_avatars.js repoOwner repo")
+  } else {
 
-  console.log("Errors:", err);
-  console.log("Result:", result);
-  for (let i = 0; i < result.length; i++) {
-    let URLS = result[i].avatar_url
-    downloadImageByURL(URLS, `./images/${result[i].login}.jpg`)
+    for (let i = 0; i < result.length; i++) {
+      let URLS = result[i].avatar_url
+      downloadImageByURL(URLS, `./images/${result[i].login}.jpg`)
+    }
   }
 
 });
@@ -49,4 +50,3 @@ function downloadImageByURL(url, filePath) {
       console.log("Download complete")
     })
 }
-
