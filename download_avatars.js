@@ -1,3 +1,20 @@
+// require('dotenv').config()
+// const db = require('db')
+// db.connect({
+//   host: process.env.DB_HOST,
+//   username: process.env.DB_USER,
+//   password: process.env.DB_PASS
+// })
+
+// const result = dotenv.config()
+
+// if (result.error) {
+//   throw result.error
+// }
+// console.log(result.parsed)
+
+
+
 var request = require('request');
 var token = require('./secrets')
 var fs = require('fs')
@@ -15,6 +32,8 @@ function getRepoContributors(repoOwner, repoName, cb) {
     }
   };
 
+
+
   request(options, function(err, res, body) {
     let parsedBody = JSON.parse(body);
 
@@ -23,15 +42,25 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 getRepoContributors(input1[0], input1[1], function(err, result) {
-  if (!input1[1]) {
-    console.log("You need to input the repository owner and \n the repo like so : node download_avatars.js repoOwner repo");
-  } else {
+  if (input1.length < 2) {
+    return console.log("You need to input the repository owner and \n the repo like so : node download_avatars.js repoOwner repo");
+  } else if (input1.length > 2) {
+    return console.log("Please limit yourself to two inputs.");
+  }
 
-    fs.mkdir('./images2')
-    for (let i = 0; i < result.length; i++) {
+  if (!fs.existsSync('./avatar_images')) {
+    fs.mkdir('./avatar_images')
+    for (let i = 0; i < 2; i++) {
       let URLS = result[i].avatar_url;
 
-      downloadImageByURL(URLS, `./images2/${result[i].login}.jpg`);
+      downloadImageByURL(URLS, `./avatar_images/${result[i].login}.jpg`);
+
+    }
+  } else {
+
+    for (let i = 0; i < 2; i++) {
+      let URLS = result[i].avatar_url;
+      downloadImageByURL(URLS, `./avatar_images/${result[i].login}.jpg`);
     }
   }
 
