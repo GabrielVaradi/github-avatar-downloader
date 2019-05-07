@@ -1,10 +1,5 @@
-// require('dotenv').config()
-// const db = require('db')
-// db.connect({
-//   host: process.env.DB_HOST,
-//   username: process.env.DB_USER,
-//   password: process.env.DB_PASS
-// })
+require('dotenv').config()
+console.log(process.env.DB_HOST)
 
 // const result = dotenv.config()
 
@@ -42,6 +37,13 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 getRepoContributors(input1[0], input1[1], function(err, result) {
+
+
+  // console.log(result)
+  // if(!result[0].avatar_url) {
+  //   return console.log("Please enter a valid repo owner or repo name")
+  // }
+
   if (input1.length < 2) {
     return console.log("You need to input the repository owner and \n the repo like so : node download_avatars.js repoOwner repo");
   } else if (input1.length > 2) {
@@ -56,17 +58,19 @@ getRepoContributors(input1[0], input1[1], function(err, result) {
       downloadImageByURL(URLS, `./avatar_images/${result[i].login}.jpg`);
 
     }
-  } else {
-
-    for (let i = 0; i < 2; i++) {
-      let URLS = result[i].avatar_url;
-      downloadImageByURL(URLS, `./avatar_images/${result[i].login}.jpg`);
-    }
   }
+
+
+  for (let i = 0; i < result.length; i++) {
+    let URLS = result[i].avatar_url;
+    downloadImageByURL(URLS, `./avatar_images/${result[i].login}.jpg`);
+  }
+
 
 });
 
 function downloadImageByURL(url, filePath) {
+
   request.get(url)
     .on('error', function(err) {
       throw err;
